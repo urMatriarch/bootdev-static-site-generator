@@ -1,6 +1,6 @@
 import unittest
 
-from splitnodes import split_nodes_delimiter
+from splitnodes import split_nodes_delimiter, split_nodes_image, split_nodes_link
 from textnode import TextNode, TextType
 
 class TestSplitNode(unittest.TestCase):
