@@ -9,7 +9,7 @@ if basepath == "":
     basepath = "/"
 
 def copy_static_contents(public = "", static = ""):
-    subpublic = os.path.join("./public", public)
+    subpublic = os.path.join("./docs", public)
     substatic = os.path.join("./static", static)
 
     if os.path.exists(subpublic): 
