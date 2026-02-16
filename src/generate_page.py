@@ -3,7 +3,7 @@ from extract_title import extract_title
 
 import os, shutil
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print (f"Generating page from {from_path} to {dest_path} using {template_path}.")
 
     with open(from_path, "r") as f:
@@ -15,12 +15,12 @@ def generate_page(from_path, template_path, dest_path):
     new_html = markdown_to_html_node(from_markdown).to_html()
     title = extract_title(from_markdown)
 
-    full_html = template_markdown.replace(" Title ", title).replace(" Content ", new_html)
+    full_html = template_markdown.replace(" Title ", title).replace(" Content ", new_html).replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
     
     with open(dest_path, "w") as f:
         f.write(full_html)
 
-def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursively(dir_path_content, template_path, dest_dir_path, basepath):
     if not os.path.exists(dest_dir_path):
         os.mkdir(dest_dir_path)
     
@@ -29,6 +29,6 @@ def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
         check = os.path.join(dir_path_content, dir)
         check_dest = os.path.join(dest_dir_path, dir).replace(".md", ".html")
         if os.path.isdir(check):
-            generate_pages_recursively(check, template_path, check_dest)
+            generate_pages_recursively(check, template_path, check_dest, basepath)
         else:
-            generate_page(check, template_path, check_dest)
+            generate_page(check, template_path, check_dest, basepath)

@@ -1,8 +1,12 @@
 from textnode import TextNode, TextType
 
-import os, shutil
+import os, shutil, sys
 
 from generate_page import generate_page, generate_pages_recursively
+
+basepath = sys.argv[0]
+if basepath == "":
+    basepath = "/"
 
 def copy_static_contents(public = "", static = ""):
     subpublic = os.path.join("./public", public)
@@ -24,5 +28,5 @@ def copy_static_contents(public = "", static = ""):
 def main():
     copy_static_contents()
     #generate_page("content/index.md", "src/template.html", "public/index.html")
-    generate_pages_recursively("content/", "src/template.html", "public/")
+    generate_pages_recursively("content/", "src/template.html", "docs/", basepath)
 main()
