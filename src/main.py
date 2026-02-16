@@ -1,7 +1,28 @@
 from textnode import TextNode, TextType
 
-def main():
-    node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print(node)
+import os, shutil
 
+from generate_page import generate_page, generate_pages_recursively
+
+def copy_static_contents(public = "", static = ""):
+    subpublic = os.path.join("./public", public)
+    substatic = os.path.join("./static", static)
+
+    if os.path.exists(subpublic): 
+        shutil.rmtree(subpublic)
+
+    os.mkdir(subpublic)
+    
+    for content in os.listdir(substatic):
+        path = os.path.join(substatic, content)
+        if os.path.isdir(path):
+            copy_static_contents(content, content)
+        else:
+            destination = os.path.join(subpublic, content)
+            shutil.copy(path, destination)
+
+def main():
+    copy_static_contents()
+    #generate_page("content/index.md", "src/template.html", "public/index.html")
+    generate_pages_recursively("content/", "src/template.html", "public/")
 main()
